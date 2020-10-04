@@ -25,6 +25,13 @@ SECRET_TEXT = "".join(
     [character if ord(character) < 128 else " " for character in SECRET_TEXT]
 )
 
+MAX_WRONG_GUESSES = streamlit.sidebar.slider(
+    "Maximum number of wrong guesses",
+    value=6,
+    min_value=4,
+    max_value=10
+)
+
 if SECRET_TEXT:
     GUESSED_LETTERS: Set[Text] = set(streamlit.text_input("Type letters to guess"))
 
@@ -57,8 +64,6 @@ if SECRET_TEXT:
             if value == False
         ]
     )
-
-    MAX_WRONG_GUESSES = 6
 
     streamlit.subheader(f"Wrongly guessed letters: `{WRONG_GUESSES}`/ `{MAX_WRONG_GUESSES}`")
 
