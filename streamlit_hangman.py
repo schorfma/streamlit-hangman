@@ -85,12 +85,27 @@ MAX_WRONG_GUESSES_TEXT = {
     "de": "Maximale Anzahl an falsch geratenen Buchstaben"
 }
 
+MAX_WRONG_GUESSES_DEFAULT = 6
+
 MAX_WRONG_GUESSES = streamlit.sidebar.slider(
     MAX_WRONG_GUESSES_TEXT[LANGUAGE],
-    value=6,
+    value=MAX_WRONG_GUESSES_DEFAULT,
     min_value=4,
     max_value=10
 )
+
+SHOW_HANGMAN_IMAGES_TEXT = {
+    "en": "Show Hangman Images",
+    "de": "Galgenraten-Bilder anzeigen"
+}
+
+if MAX_WRONG_GUESSES == MAX_WRONG_GUESSES_DEFAULT:
+    SHOW_HANGMAN_IMAGES = streamlit.sidebar.checkbox(
+        SHOW_HANGMAN_IMAGES_TEXT[LANGUAGE],
+        value=True
+    )
+else:
+    SHOW_HANGMAN_IMAGES = False
 
 if SECRET_TEXT:
 
@@ -132,16 +147,67 @@ if SECRET_TEXT:
         for character in SECRET_TEXT
     ]
 
-    streamlit.markdown(
-        f"# `{''.join(UNCOVERED_SECRET_TEXT)}`"
-    )
-
     WRONG_GUESSES = len(
         [
             value
             for value in GUESS_ALPHABET.values()
             if value == False
         ]
+    )
+
+    HANGMAN_IMAGES = [
+        "images/Hangman-0.png",
+        "images/Hangman-1.png",
+        "images/Hangman-2.png",
+        "images/Hangman-3.png",
+        "images/Hangman-4.png",
+        "images/Hangman-5.png",
+        "images/Hangman-6.png",
+    ]
+
+    HANGMAN_IMAGES_SOURCE = [
+        "https://commons.wikimedia.org/wiki/File:Hangman-0.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-1.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-2.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-3.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-4.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-5.png",
+        "https://commons.wikimedia.org/wiki/File:Hangman-6.png"
+    ]
+
+    if SHOW_HANGMAN_IMAGES:
+        streamlit.image(
+            HANGMAN_IMAGES[
+                min(
+                    WRONG_GUESSES,
+                    MAX_WRONG_GUESSES_DEFAULT
+                )
+            ]
+        )
+
+        IMAGE_LICENSE_LINK = "[Creative Commons Attribution-Share Alike 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en)"
+
+        IMAGE_AUTHOR_LINK = "[Demi](https://en.wikipedia.org/wiki/User:Demi)"
+
+        IMAGE_SOURCE_TEXT = {
+            "en": (
+                f"* Image License: {IMAGE_LICENSE_LINK}\n"
+                f"* Image Author: User {IMAGE_AUTHOR_LINK} on English Wikipedia\n"
+                f"* Image Source: <{HANGMAN_IMAGES_SOURCE[min(WRONG_GUESSES, MAX_WRONG_GUESSES_DEFAULT)]}>"
+            ),
+            "de": (
+                f"* Bildlizenz: {IMAGE_LICENSE_LINK}\n"
+                f"* Bildautor: Benutzer {IMAGE_AUTHOR_LINK} auf der englischen Wikipedia\n"
+                f"* Bildquelle: <{HANGMAN_IMAGES_SOURCE[min(WRONG_GUESSES, MAX_WRONG_GUESSES_DEFAULT)]}>"
+            )
+        }
+
+        streamlit.info(
+            IMAGE_SOURCE_TEXT[LANGUAGE]
+        )
+
+    streamlit.markdown(
+        f"# `{''.join(UNCOVERED_SECRET_TEXT)}`"
     )
 
     WRONGLY_GUESSED_LETTERS_TEXT = {
