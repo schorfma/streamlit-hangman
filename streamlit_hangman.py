@@ -77,7 +77,11 @@ SECRET_TEXT = streamlit.sidebar.text_input(
 ).upper()
 
 SECRET_TEXT = "".join(
-    [character if ord(character) < 128 else " " for character in SECRET_TEXT]
+    [
+        character
+        if character in ALPHABET else " "
+        for character in SECRET_TEXT
+    ]
 )
 
 MAX_WRONG_GUESSES_TEXT = {
