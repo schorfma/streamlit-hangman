@@ -106,6 +106,9 @@ if MAX_WRONG_GUESSES == MAX_WRONG_GUESSES_DEFAULT:
     )
 else:
     SHOW_HANGMAN_IMAGES = False
+    streamlit.sidebar.markdown(
+        f"~~{SHOW_HANGMAN_IMAGES_TEXT[LANGUAGE]}~~"
+    )
 
 if SECRET_TEXT:
 
@@ -133,14 +136,12 @@ if SECRET_TEXT:
         GUESS_ALPHABET[guessed_letter] = bool(guessed_letter in SECRET_TEXT)
 
     ALPHABET_LETTERS_STATUS_TEXT = {
-        "en": "Status for the letters of the Alphabet",
-        "de": "Status der Buchstaben des Alphabets"
+        "en": "Show status for the letters of the Alphabet",
+        "de": "Status der Buchstaben des Alphabets zeigen"
     }
 
-    streamlit.subheader(
-        ALPHABET_LETTERS_STATUS_TEXT[LANGUAGE]
-    )
-    streamlit.write(GUESS_ALPHABET)
+    if streamlit.checkbox(ALPHABET_LETTERS_STATUS_TEXT[LANGUAGE]):
+        streamlit.write(GUESS_ALPHABET)
 
     UNCOVERED_SECRET_TEXT: List[Text] = [
         character if GUESS_ALPHABET.get(character) or character == SPACE_CHARACTER else LETTER_PLACEHOLDER
