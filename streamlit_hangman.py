@@ -6,7 +6,7 @@ import streamlit
 streamlit.title("Streamlit Hangman")
 
 streamlit.markdown(
-    "1. Write you secret word into the input within the sidebar on the left.\n"
+    "1. Write your secret word into the input within the sidebar on the left.\n"
     "2. Don't forget to hide the sidebar before sharing this page in the browser.\n"
     "3. Happy Hangman playing!"
 )
