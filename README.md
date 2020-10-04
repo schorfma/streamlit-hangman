@@ -19,3 +19,5 @@ streamlit run streamlit_hangman.py
 ```
 
 The page should open in your default browser.
+
+The language (`English` or `German` available) can be selected in the sidebar on the left.
