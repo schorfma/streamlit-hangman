@@ -1,5 +1,7 @@
 # Streamlit Hangman
 
+![Screenshot Streamlit Hangman](./images/Screenshot-Streamlit-Hangman.png)
+
 **Hangman** implementation with browser interface for use in _streams_ / _video conferences_ using the **Streamlit** library
 
 ## Installation
@@ -15,3 +17,5 @@ pip install -r requirements.txt
 ```bash
 streamlit run streamlit_hangman.py
 ```
+
+The page should open in your default browser.
