@@ -35,6 +35,7 @@ if SECRET_TEXT:
     ]:
         GUESS_ALPHABET[guessed_letter] = bool(guessed_letter in SECRET_TEXT)
 
+    streamlit.subheader("Status for the letters of the Alphabet")
     streamlit.write(GUESS_ALPHABET)
 
     UNCOVERED_SECRET_TEXT: List[Text] = [
