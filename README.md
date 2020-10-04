@@ -2,7 +2,7 @@
 
 ![Screenshot Streamlit Hangman](./images/Screenshot-Streamlit-Hangman.png)
 
-**Hangman** implementation with browser interface for use in _streams_ / _video conferences_ using the **Streamlit** library
+**Hangman** implementation with browser interface for use in _streams_ / _video conferences_ using the **Streamlit** library (<https://www.streamlit.io>)
 
 ## Installation
 
