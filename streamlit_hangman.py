@@ -3,15 +3,60 @@ from typing import Text, Dict, List, Optional, Set
 
 import streamlit
 
-if streamlit.checkbox("Show link to Source Code Repository"):
-    streamlit.info("Host your own Hangman interface using <https://gitlab.com/schorfma/streamlit-hangman>")
+LANGUAGES = {
+    "en": "English",
+    "de": "Deutsch"
+}
 
-streamlit.title("Streamlit Hangman")
+LANGUAGE = streamlit.sidebar.selectbox(
+    "🌍 Language",
+    list(LANGUAGES.keys()),
+    format_func=lambda lang: LANGUAGES[lang]
+)
+
+SHOW_SOURCE_LINK_TEXT = {
+    "en": "Show link to Source Code Repository",
+    "de": "Link zu Quelltext-Verzeichnis einblenden"
+}
+
+SOURCE_CODE_REPO_URL = "https://gitlab.com/schorfma/streamlit-hangman"
+
+SELF_HOSTING_INFO_TEXT = {
+    "en": f"Host your own Hangman interface using <{SOURCE_CODE_REPO_URL}>",
+    "de": f"Hoste deine eigene Galgenraten-Oberfläche mit <{SOURCE_CODE_REPO_URL}>"
+}
+
+if streamlit.sidebar.checkbox(
+        SHOW_SOURCE_LINK_TEXT[LANGUAGE]
+):
+    streamlit.info(
+        SELF_HOSTING_INFO_TEXT[LANGUAGE]
+    )
+
+TITLE_TEXT = {
+    "en": "Streamlit Hangman",
+    "de": "Streamlit Galgenraten"
+}
+
+streamlit.title(
+    TITLE_TEXT[LANGUAGE]
+)
+
+INSTRUCTIONS_TEXT = {
+    "en": (
+        "1. Write your secret word into the input within the sidebar on the left.\n"
+        "2. Don't forget to hide the sidebar before sharing this page in the browser.\n"
+        "3. Happy Hangman playing!"
+    ),
+    "de": (
+        "1. Schreibe dein geheimes Wort in das Eingabefeld in der Seitenleiste links.\n"
+        "2. Vergiss nicht die Seitenleiste wieder vor dem Teilen dieser Seite zu schließen\n"
+        "3. Viel Spaß beim Galgenraten!"
+    )
+}
 
 streamlit.markdown(
-    "1. Write your secret word into the input within the sidebar on the left.\n"
-    "2. Don't forget to hide the sidebar before sharing this page in the browser.\n"
-    "3. Happy Hangman playing!"
+    INSTRUCTIONS_TEXT[LANGUAGE]
 )
 
 ALPHABET: List[Text] = [
@@ -20,22 +65,45 @@ ALPHABET: List[Text] = [
 ]
 
 LETTER_PLACEHOLDER = "☐"
+SPACE_CHARACTER = " "
 
-SECRET_TEXT = streamlit.sidebar.text_input("Input the Secret word or words").upper()
+SECRET_TEXT_INPUT_TEXT = {
+    "en": "Input the Secret word or words",
+    "de": "Gib das geheime Wort oder mehrere geheime Wörter ein"
+}
+
+SECRET_TEXT = streamlit.sidebar.text_input(
+    SECRET_TEXT_INPUT_TEXT[LANGUAGE]
+).upper()
 
 SECRET_TEXT = "".join(
     [character if ord(character) < 128 else " " for character in SECRET_TEXT]
 )
 
+MAX_WRONG_GUESSES_TEXT = {
+    "en": "Maximum number of wrong guesses",
+    "de": "Maximale Anzahl an falsch geratenen Buchstaben"
+}
+
 MAX_WRONG_GUESSES = streamlit.sidebar.slider(
-    "Maximum number of wrong guesses",
+    MAX_WRONG_GUESSES_TEXT[LANGUAGE],
     value=6,
     min_value=4,
     max_value=10
 )
 
 if SECRET_TEXT:
-    GUESSED_LETTERS: Set[Text] = set(streamlit.text_input("Type letters to guess"))
+
+    GUESSED_LETTERS_TEXT = {
+        "en": "Type letters to guess",
+        "de": "Gib Buchstaben zum Erraten ein"
+    }
+
+    GUESSED_LETTERS: Set[Text] = set(
+        streamlit.text_input(
+            GUESSED_LETTERS_TEXT[LANGUAGE]
+        )
+    )
 
     GUESS_ALPHABET: Dict[Text, Optional[bool]] = {
         letter: None
@@ -43,15 +111,24 @@ if SECRET_TEXT:
     }
 
     for guessed_letter in [
-            guessed_letter.upper() for guessed_letter in list(GUESSED_LETTERS)
+            guessed_letter.upper()
+            for guessed_letter in list(GUESSED_LETTERS)
+            if guessed_letter.upper() in ALPHABET
     ]:
         GUESS_ALPHABET[guessed_letter] = bool(guessed_letter in SECRET_TEXT)
 
-    streamlit.subheader("Status for the letters of the Alphabet")
+    ALPHABET_LETTERS_STATUS_TEXT = {
+        "en": "Status for the letters of the Alphabet",
+        "de": "Status der Buchstaben des Alphabets"
+    }
+
+    streamlit.subheader(
+        ALPHABET_LETTERS_STATUS_TEXT[LANGUAGE]
+    )
     streamlit.write(GUESS_ALPHABET)
 
     UNCOVERED_SECRET_TEXT: List[Text] = [
-        character if GUESS_ALPHABET.get(character) or character == " " else LETTER_PLACEHOLDER
+        character if GUESS_ALPHABET.get(character) or character == SPACE_CHARACTER else LETTER_PLACEHOLDER
         for character in SECRET_TEXT
     ]
 
@@ -67,9 +144,39 @@ if SECRET_TEXT:
         ]
     )
 
-    streamlit.subheader(f"Wrongly guessed letters: `{WRONG_GUESSES}`/ `{MAX_WRONG_GUESSES}`")
+    WRONGLY_GUESSED_LETTERS_TEXT = {
+        "en": "Wrongly guessed letters",
+        "de": "Falsch geratene Buchstaben"
+    }
+
+    streamlit.subheader(
+        f"{WRONGLY_GUESSED_LETTERS_TEXT[LANGUAGE]}: `{WRONG_GUESSES}`/ `{MAX_WRONG_GUESSES}`"
+    )
+
+    GAME_OVER_TEXT = {
+        "en": "Game Over!",
+        "de": "Spiel verloren!"
+    }
+
+    GAME_WON_TEXT = {
+        "en": "Game Won!",
+        "de": "Spiel gewonnen!"
+    }
+
+    GAME_UNDECIDED_TEXT = {
+        "en": "Game is not decided, yet",
+        "de": "Spiel ist noch nicht entschieden"
+    }
 
     if WRONG_GUESSES >= MAX_WRONG_GUESSES:
-        streamlit.error("Game Over!")
+        streamlit.error(
+            f"### {GAME_OVER_TEXT[LANGUAGE]}"
+        )
     elif LETTER_PLACEHOLDER not in UNCOVERED_SECRET_TEXT:
-        streamlit.success("Game Won!")
+        streamlit.success(
+            f"### {GAME_WON_TEXT[LANGUAGE]}"
+        )
+    else:
+        streamlit.info(
+            f"### {GAME_UNDECIDED_TEXT[LANGUAGE]}"
+        )
