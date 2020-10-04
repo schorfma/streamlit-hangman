@@ -19,6 +19,8 @@ ALPHABET: List[Text] = [
     for letter in string.ascii_uppercase
 ]
 
+LETTER_PLACEHOLDER = "☐"
+
 SECRET_TEXT = streamlit.sidebar.text_input("Input the Secret word or words").upper()
 
 SECRET_TEXT = "".join(
@@ -49,7 +51,7 @@ if SECRET_TEXT:
     streamlit.write(GUESS_ALPHABET)
 
     UNCOVERED_SECRET_TEXT: List[Text] = [
-        character if GUESS_ALPHABET.get(character) or character == " " else "☐"
+        character if GUESS_ALPHABET.get(character) or character == " " else LETTER_PLACEHOLDER
         for character in SECRET_TEXT
     ]
 
@@ -69,5 +71,5 @@ if SECRET_TEXT:
 
     if WRONG_GUESSES >= MAX_WRONG_GUESSES:
         streamlit.error("Game Over!")
-    elif "☐" not in UNCOVERED_SECRET_TEXT:
+    elif LETTER_PLACEHOLDER not in UNCOVERED_SECRET_TEXT:
         streamlit.success("Game Won!")
