@@ -3,6 +3,9 @@ from typing import Text, Dict, List, Optional, Set
 
 import streamlit
 
+if streamlit.checkbox("Show link to Source Code Repository"):
+    streamlit.info("Host your own Hangman interface using <https://gitlab.com/schorfma/streamlit-hangman>")
+
 streamlit.title("Streamlit Hangman")
 
 streamlit.markdown(
