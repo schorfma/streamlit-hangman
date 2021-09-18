@@ -1,1 +1,1 @@
-Streamlit
+Streamlit ~= 0.88.0

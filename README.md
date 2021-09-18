@@ -6,7 +6,7 @@
 
 ## Installation
 
-Python ≥ 3.7.0 is required
+Python ≥ 3.8.0 is required
 
 ```bash
 pip install -r requirements.txt
