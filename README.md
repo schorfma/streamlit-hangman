@@ -4,6 +4,9 @@
 
 **Hangman** implementation with browser interface for use in _streams_ / _video conferences_ using the **Streamlit** library (<https://www.streamlit.io>)
 
+## [✨ Live Web Application](https://share.streamlit.io/schorfma/streamlit-hangman/streamlit_hangman.py)
+<!-- Also on Heroku: http://streamlit-hangman.herokuapp.com -->
+
 ## Installation
 
 Python ≥ 3.8.0 is required
