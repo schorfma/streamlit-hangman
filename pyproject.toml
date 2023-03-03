@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "streamlit-hangman"
+version = "0.2.0"
+description = "Hangman implementation with browser interface for use in streams / video conferences using the Streamlit library"
+authors = ["Martin Schorfmann <martin@schorfma.de>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "streamlit_hangman.py"}]
+
+[tool.poetry.dependencies]
+python = "> 3.9.7, < 3.12"
+streamlit = "^1.19.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
