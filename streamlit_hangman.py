@@ -5,7 +5,7 @@ import streamlit
 
 streamlit.set_page_config(
     page_title="Streamlit Hangman",
-    page_icon="game",
+    page_icon="knot",
 )
 
 LANGUAGES = {"en": "English", "de": "Deutsch"}
